@@ -1,0 +1,503 @@
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #262626;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent-primary: #22c55e;
+    --accent-hover: #16a34a;
+    --border-color: #404040;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --gradient-primary: linear-gradient(135deg, #22c55e, #10b981);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background: linear-gradient(180deg, var(--bg-primary), #121212);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    font-weight: 400;
+    line-height: 1.6; /* Slightly larger line height for readability */
+}
+
+/* --- Auth Pages --- */
+.auth-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(18, 18, 18, 0.9));
+    min-height: 100vh;
+}
+.auth-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    padding: 50px; /* Increased from 48px */
+    border-radius: 26px; /* Slightly larger radius */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 440px; /* Slightly wider */
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+.auth-container:hover {
+    transform: translateY(-5px); /* Slightly larger lift */
+}
+.auth-container h1 {
+    color: var(--text-primary);
+    margin-bottom: 14px; /* Increased from 12px */
+    font-size: 30px; /* Increased from 28px */
+    font-weight: 600;
+}
+.auth-container p {
+    color: var(--text-secondary);
+    margin-bottom: 30px; /* Increased from 28px */
+    font-size: 17px; /* Increased from 16px */
+}
+.input-group {
+    text-align: left;
+    margin-bottom: 22px; /* Increased from 20px */
+}
+.input-group label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 15px; /* Increased from 14px */
+    font-weight: 500;
+    margin-bottom: 9px; /* Increased from 8px */
+}
+.input-group input {
+    width: 100%;
+    padding: 16px; /* Increased from 14px */
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px; /* Slightly larger radius */
+    color: var(--text-primary);
+    font-size: 16px; /* Increased from 15px */
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.input-group input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.3); /* Slightly larger shadow */
+}
+.auth-btn {
+    width: 100%;
+    padding: 16px; /* Increased from 14px */
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 14px; /* Slightly larger radius */
+    font-size: 17px; /* Increased from 16px */
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.auth-btn:hover {
+    transform: translateY(-3px); /* Slightly larger lift */
+    box-shadow: 0 5px 14px rgba(34, 197, 94, 0.4); /* Slightly larger shadow */
+}
+
+/* --- Dashboard --- */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+.sidebar {
+    width: 300px; /* Increased from 280px */
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 26px; /* Increased from 24px */
+    box-shadow: var(--shadow);
+}
+.sidebar-header {
+    margin-bottom: 26px; /* Increased from 24px */
+}
+.new-chat-btn {
+    width: 100%;
+    padding: 14px; /* Increased from 12px */
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 14px; /* Slightly larger radius */
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.new-chat-btn:hover {
+    transform: translateY(-3px); /* Slightly larger lift */
+    box-shadow: 0 5px 14px rgba(34, 197, 94, 0.4); /* Slightly larger shadow */
+}
+.sidebar-footer {
+    margin-top: auto;
+}
+.logout-btn {
+    width: 100%;
+    padding: 14px; /* Increased from 12px */
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px; /* Slightly larger radius */
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+.logout-btn:hover {
+    background: #ef4444;
+    color: white;
+    border-color: #ef4444;
+    transform: translateY(-3px); /* Slightly larger lift */
+}
+
+/* Chat Area */
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-primary);
+    position: relative;
+}
+.chat-messages {
+    flex: 1;
+    padding: 34px; /* Increased from 32px */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 26px; /* Increased from 24px */
+}
+.message {
+    max-width: 85%;
+    padding: 18px 22px; /* Increased from 16px 20px */
+    border-radius: 22px; /* Slightly larger radius */
+    font-size: 17px; /* Increased from 16px */
+    line-height: 1.7; /* Slightly larger line height */
+    word-wrap: break-word;
+    animation: fadeIn 0.4s ease-in-out;
+    box-shadow: var(--shadow);
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(14px); } /* Slightly larger initial offset */
+    to { opacity: 1; transform: translateY(0); }
+}
+.message.user {
+    background: var(--gradient-primary);
+    color: #ffffff;
+    align-self: flex-end;
+    border-bottom-right-radius: 6px; /* Slightly larger radius */
+}
+.message.bot {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    color: var(--text-primary);
+    align-self: flex-start;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom-left-radius: 6px; /* Slightly larger radius */
+}
+.message.system {
+    background: var(--glass-bg);
+    color: var(--text-secondary);
+    align-self: center;
+    font-size: 15px; /* Increased from 14px */
+    padding: 12px 16px; /* Increased from 10px 14px */
+}
+
+/* Content specific styles */
+.content-label {
+    font-size: 13px; /* Increased from 12px */
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 12px; /* Increased from 10px */
+    letter-spacing: 0.1em;
+    padding-bottom: 10px; /* Increased from 8px */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.news-content, .linkedin-content {
+    padding: 22px; /* Increased from 20px */
+}
+.linkedin-content .content-label {
+    border-color: #10b981;
+}
+
+/* Action Buttons & Copy Button */
+.action-buttons {
+    display: flex;
+    gap: 14px; /* Increased from 12px */
+    margin-top: 22px; /* Increased from 20px */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 18px; /* Increased from 16px */
+}
+.action-btn, .copy-btn {
+    padding: 8px 14px; /* Increased from 6px 12px */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px; /* Increased from 8px */
+    font-size: 14px; /* Increased from 13px */
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    color: var(--text-primary);
+    min-width: 70px; /* Increased from 60px */
+    text-align: center;
+}
+.action-btn.accept-btn:hover {
+    background: var(--gradient-primary);
+    border-color: var(--accent-primary);
+    transform: translateY(-3px); /* Slightly larger lift */
+}
+.action-btn.decline-btn:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    transform: translateY(-3px); /* Slightly larger lift */
+}
+.copy-btn:hover {
+    background: var(--gradient-primary);
+    border-color: var(--accent-primary);
+    transform: translateY(-3px); /* Slightly larger lift */
+}
+.copy-btn.copied {
+    background: #16a34a;
+    color: white;
+    transform: translateY(-3px); /* Slightly larger lift */
+}
+
+/* Edit Button */
+.edit-btn {
+    display: none; /* Controlled by JavaScript */
+    width: 32px; /* Small size for pencil icon */
+    height: 32px; /* Small size for pencil icon */
+    padding: 0; /* Remove padding for icon-only button */
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px; /* Smaller radius for compact look */
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out, background-color 0.3s;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'); /* Pencil icon */
+    background-size: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.edit-btn:hover {
+    background: var(--gradient-primary);
+    border-color: var(--accent-primary);
+    transform: translateY(-3px); /* Consistent lift */
+    box-shadow: 0 5px 14px rgba(34, 197, 94, 0.4); /* Consistent shadow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>'); /* Retain pencil icon on hover */
+    background-size: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Standalone Copy Button */
+.standalone-copy-btn {
+    width: 100%;
+    padding: 16px; /* Slightly larger for emphasis */
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px; /* Consistent with other buttons */
+    color: var(--text-primary);
+    font-size: 16px; /* Consistent with other buttons */
+    font-weight: 600;
+    cursor: pointer;
+    margin: 16px 34px 0; /* Align with input-container padding */
+    transition: all 0.3s ease;
+}
+.standalone-copy-btn:hover {
+    background: var(--gradient-primary);
+    border-color: var(--accent-primary);
+    transform: translateY(-3px); /* Consistent lift */
+    box-shadow: 0 5px 14px rgba(34, 197, 94, 0.4); /* Consistent shadow */
+}
+.standalone-copy-btn.copied {
+    background: #16a34a;
+    color: white;
+    transform: translateY(-3px); /* Consistent lift */
+}
+
+/* Input Area */
+.input-container {
+    padding: 22px 34px; /* Increased from 20px 32px */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 18px; /* Increased from 16px */
+    align-items: flex-end;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+}
+#messageInput {
+    flex: 1;
+    padding: 16px 22px; /* Increased from 14px 20px */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px; /* Slightly larger radius */
+    font-size: 17px; /* Increased from 16px */
+    outline: none;
+    resize: none;
+    max-height: 180px; /* Increased from 160px */
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    color: var(--text-primary);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: inherit;
+}
+#messageInput:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.3); /* Slightly larger shadow */
+}
+#sendButton {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 18px; /* Slightly larger radius */
+    width: 60px; /* Increased from 56px */
+    height: 60px; /* Increased from 56px */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+#sendButton:hover {
+    transform: translateY(-3px); /* Slightly larger lift */
+    box-shadow: 0 5px 14px rgba(34, 197, 94, 0.4); /* Slightly larger shadow */
+}
+#sendButton:disabled {
+    background: var(--bg-tertiary);
+    cursor: not-allowed;
+}
+#sendButton svg {
+    width: 26px; /* Increased from 24px */
+    height: 26px; /* Increased from 24px */
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 34px; /* Increased from 32px */
+    border-radius: 26px; /* Slightly larger radius */
+    width: 90%;
+    max-width: 500px; /* Increased from 480px */
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+.modal-content:hover {
+    transform: translateY(-5px); /* Slightly larger lift */
+}
+.modal-content h3 {
+    margin-bottom: 14px; /* Increased from 12px */
+    font-size: 24px; /* Increased from 22px */
+    font-weight: 600;
+}
+.modal-content p {
+    color: var(--text-secondary);
+    font-size: 16px; /* Increased from 15px */
+    margin-bottom: 22px; /* Increased from 20px */
+}
+.modal-content textarea {
+    width: 100%;
+    min-height: 140px; /* Increased from 120px */
+    padding: 16px; /* Increased from 14px */
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px; /* Slightly larger radius */
+    color: var(--text-primary);
+    font-size: 16px; /* Increased from 15px */
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.modal-content textarea:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.3); /* Slightly larger shadow */
+}
+.modal-buttons {
+    display: flex;
+    gap: 18px; /* Increased from 16px */
+    margin-top: 22px; /* Increased from 20px */
+    justify-content: flex-end;
+}
+.modal-btn {
+    padding: 12px 26px; /* Increased from 10px 24px */
+    border: none;
+    border-radius: 14px; /* Slightly larger radius */
+    font-size: 16px; /* Increased from 15px */
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.modal-btn.submit {
+    background: var(--gradient-primary);
+    color: white;
+}
+.modal-btn.submit:hover {
+    transform: translateY(-3px); /* Slightly larger lift */
+    box-shadow: 0 5px 14px rgba(34, 197, 94, 0.4); /* Slightly larger shadow */
+}
+.modal-btn.cancel {
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.modal-btn.cancel:hover {
+    background: var(--border-color);
+    transform: translateY(-3px); /* Slightly larger lift */
+}
+
+.welcome-screen {
+    text-align: center;
+    margin: auto;
+    color: var(--text-secondary);
+    font-size: 19px; /* Increased from 18px */
+}
+.typing {
+    display: flex;
+    align-items: center;
+    gap: 14px; /* Increased from 12px */
+}
+
+.circular-loader {
+    width: 20px; /* Increased from 18px */
+    height: 20px; /* Increased from 18px */
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top: 3px solid var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Final Post Actions (Adjusted for new design) */
+.final-post-actions {
+    padding: 0 34px 22px; /* Consistent with input-container padding and bottom margin */
+    display: flex;
+    justify-content: center; /* Center the copy button */
+}
