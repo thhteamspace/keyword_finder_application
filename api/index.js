@@ -13,49 +13,70 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-// MongoDB connection
-const dbURI = "mongodb+srv://Jitesh001:Jitesh001@twicky.fxotzly.mongodb.net/?retryWrites=true&w=majority";
+// MongoDB connection with proper serverless handling
+let isConnected = false;
 
-// User Schema
-const UserSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
-
-// Message Schema
-const MessageSchema = new mongoose.Schema({
-  role: { type: String, enum: ['user', 'bot', 'system'], required: true },
-  content: { type: String, required: true },
-  contentType: { type: String, enum: ['news', 'linkedin', null], default: null },
-  feedback: {
-    isDeclined: { type: Boolean, default: false },
-    text: { type: String, default: '' },
-    refinedContent: { type: String, default: '' }
+const connectDB = async () => {
+  if (isConnected) {
+    return;
   }
-}, { timestamps: true });
+  
+  try {
+    const dbURI = "mongodb+srv://Jitesh001:Jitesh001@twicky.fxotzly.mongodb.net/?retryWrites=true&w=majority";
+    await mongoose.connect(dbURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log("✅ MongoDB Connected...");
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error);
+    isConnected = false;
+  }
+};
 
-// Chat Session Schema
-const ChatSessionSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  title: { type: String, required: true },
-  messages: [MessageSchema],
-  isProcessing: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now }
-});
+// Schemas with proper model checking
+let User, ChatSession;
 
-const User = mongoose.model('User', UserSchema);
-const ChatSession = mongoose.model('ChatSession', ChatSessionSchema);
+const createModels = () => {
+  if (User && ChatSession) {
+    return { User, ChatSession };
+  }
 
-// Connect to MongoDB with error handling
-mongoose.connect(dbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log("✅ MongoDB Connected..."))
-  .catch(err => {
-    console.error("❌ MongoDB connection error:", err);
+  // User Schema
+  const UserSchema = new mongoose.Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
   });
+
+  // Message Schema
+  const MessageSchema = new mongoose.Schema({
+    role: { type: String, enum: ['user', 'bot', 'system'], required: true },
+    content: { type: String, required: true },
+    contentType: { type: String, enum: ['news', 'linkedin', null], default: null },
+    feedback: {
+      isDeclined: { type: Boolean, default: false },
+      text: { type: String, default: '' },
+      refinedContent: { type: String, default: '' }
+    }
+  }, { timestamps: true });
+
+  // Chat Session Schema
+  const ChatSessionSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    title: { type: String, required: true },
+    messages: [MessageSchema],
+    isProcessing: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now }
+  });
+
+  // Check if models exist before creating
+  User = mongoose.models.User || mongoose.model('User', UserSchema);
+  ChatSession = mongoose.models.ChatSession || mongoose.model('ChatSession', ChatSessionSchema);
+
+  return { User, ChatSession };
+};
 
 // Webhook URLs
 const WEBHOOKS = {
@@ -82,14 +103,19 @@ const formatWebhookResponse = (data) => {
 // User Registration
 app.post('/api/auth/register', async (req, res) => {
   try {
+    await connectDB();
+    const { User } = createModels();
+    
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({ msg: 'Please enter all fields' });
     }
+    
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ msg: 'User already exists' });
     }
+    
     user = new User({ email, password });
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
@@ -109,14 +135,19 @@ app.post('/api/auth/register', async (req, res) => {
 // User Login
 app.post('/api/auth/login', async (req, res) => {
   try {
+    await connectDB();
+    const { User } = createModels();
+    
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({ msg: 'Please enter all fields' });
     }
+    
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ msg: 'Invalid credentials' });
@@ -136,6 +167,9 @@ app.post('/api/auth/login', async (req, res) => {
 // Chat initiate
 app.post('/api/chat/initiate', async (req, res) => {
   try {
+    await connectDB();
+    const { ChatSession } = createModels();
+    
     const { keywords, userId } = req.body;
     
     const response = await axios.post(WEBHOOKS.NEWS_FINDER, { keywords });
@@ -162,6 +196,9 @@ app.post('/api/chat/initiate', async (req, res) => {
 // Chat accept
 app.post('/api/chat/accept', async (req, res) => {
   try {
+    await connectDB();
+    const { ChatSession } = createModels();
+    
     const { sessionId, lastMessageContent } = req.body;
 
     const response = await axios.post(WEBHOOKS.CONTENT_CREATION, { news: lastMessageContent });
@@ -188,6 +225,9 @@ app.post('/api/chat/accept', async (req, res) => {
 // Chat decline
 app.post('/api/chat/decline', async (req, res) => {
   try {
+    await connectDB();
+    const { ChatSession } = createModels();
+    
     const { sessionId, feedback, lastMessage, messageId } = req.body;
 
     let webhookUrl;

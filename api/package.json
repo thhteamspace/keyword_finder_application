@@ -1,0 +1,14 @@
+{
+  "name": "ai-agent-api",
+  "version": "1.0.0",
+  "description": "AI Agent API for Vercel",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "axios": "^1.12.2",
+    "cors": "^2.8.5"
+  }
+}
