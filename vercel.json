@@ -12,6 +12,12 @@
   ],
   "routes": [
     { "src": "/test", "dest": "api/test.js" },
+    { "src": "/api/(.*)", "dest": "api/index.js" },
+    { "src": "/login", "dest": "api/index.js" },
+    { "src": "/register", "dest": "api/index.js" },
+    { "src": "/dashboard", "dest": "api/index.js" },
+    { "src": "/home", "dest": "api/index.js" },
+    { "src": "/", "dest": "api/index.js" },
     { "src": "/(.*)", "dest": "api/index.js" }
   ]
 }
