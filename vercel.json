@@ -2,7 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.js",
+      "src": "api/auth.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/chat.js",
       "use": "@vercel/node"
     },
     {
@@ -11,6 +15,8 @@
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "api/index.js" }
+    { "src": "/api/auth/(.*)", "dest": "api/auth.js" },
+    { "src": "/api/chat/(.*)", "dest": "api/chat.js" },
+    { "src": "/(.*)", "dest": "public/index.html" }
   ]
 }

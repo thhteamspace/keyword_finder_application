@@ -12,16 +12,29 @@ app.use(express.json());
 
 // Connect to MongoDB Atlas
 const dbURI = "mongodb+srv://Jitesh001:Jitesh001@twicky.fxotzly.mongodb.net/?retryWrites=true&w=majority";
+
+// MongoDB connection with error handling
 mongoose.connect(dbURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
   .then(() => console.log("✅ MongoDB Connected..."))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+  .catch(err => {
+    console.error("❌ MongoDB connection error:", err);
+    // Don't crash the function if DB connection fails
+  });
 
-// API Routes
-app.use("/api/auth", require("../routes/auth"));
-app.use("/api/chat", require("../routes/chat"));
+// Import routes with proper error handling
+try {
+  const authRoutes = require('../routes/auth');
+  const chatRoutes = require('../routes/chat');
+  
+  // API Routes
+  app.use("/api/auth", authRoutes);
+  app.use("/api/chat", chatRoutes);
+} catch (error) {
+  console.error("Error loading routes:", error);
+}
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "../public")));
@@ -42,6 +55,12 @@ app.get("/", (req, res) => {
 // Catch-all handler for client-side routing
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "index.html"));
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
 module.exports = app;
